@@ -8,7 +8,13 @@ export class CreatePaymentDto {
     @ApiProperty({ required: true })
     mode: string;
 
-    @ApiProperty({ required: true })
-    order1: number;
+    @ApiProperty()
+    userId: string;
+
+    @ApiProperty()
+    productId: number;
+
+    @ApiProperty()
+    orderId: number;
 
 }

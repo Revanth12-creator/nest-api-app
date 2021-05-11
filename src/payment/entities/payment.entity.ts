@@ -1,6 +1,7 @@
 import { type } from 'node:os';
 import { UserEntity } from 'src/auth/entities/user.entity';
 import { Order } from 'src/order/entities/order.entity';
+import { Product } from 'src/product/entities/product.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinColumn, OneToOne, ManyToMany } from "typeorm";
 
 @Entity({ name: 'payment' })
@@ -20,9 +21,17 @@ export class Payment {
     @Column({ default: 'cash' })
     paymentMode: string;
 
+
+    @ManyToOne(() => UserEntity, (userEntity) => userEntity.userId)
+    @JoinColumn({ name: 'userId' })
+    userId: UserEntity;
+
     @ManyToOne(() => Order, (order) => order.orderId)
     @JoinColumn({ name: 'orderId' })
-    order: Order[];
+    orderId: Order[];
 
+    @ManyToOne(() => Product, (product) => product.productId)
+    @JoinColumn({ name: 'productId' })
+    productId: Product;
 
 }

@@ -10,9 +10,8 @@ export class CreateOrderDto {
     qty: number;
 
     @ApiProperty()
-    user: string;
+    userId: string;
 
     @ApiProperty()
-    product: number;
+    productId: number;
 }
-

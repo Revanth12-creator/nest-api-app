@@ -19,24 +19,28 @@ export class OrderDetailsService {
     private productService: ProductService
   ) { }
 
-  async create(uId: string, orderId: number, productId: number, createOrderDetailDto: CreateOrderDetailDto) {
+  async create(uId: string, oId: number, pId: number, createOrderDetailDto: CreateOrderDetailDto) {
     try {
-      const user1 = await this.userService.findById(uId);
-      const order1 = await this.orderService.findOne(orderId);
-      const product1 = await this.productService.findOne(productId);
+      const user = await this.userService.findById(uId);
+      console.log(user);
+      const order = await this.orderService.findOne(oId);
+      console.log(order);
+      const product = await this.productService.findOne(pId);
+      const { qty } = createOrderDetailDto;
       return this.orderDetailsRepository.save({
-        quantity: createOrderDetailDto.qty,
-        user1,
-        order1,
-        product1
+        quantity: qty,
+        userId: user,
+        //orderId: order,
+        productId: product
       });
     } catch (err) {
       console.log(err)
     }
   }
 
-  findAll() {
-    return `This action returns all orderDetails`;
+  async findAll(userId: string) {
+    const user = await this.userService.findById(userId);
+    return this.orderDetailsRepository.find({ where: { userId: user } });
   }
 
   findOne(id: number,) {

@@ -4,13 +4,12 @@ export class CreateOrderDetailDto {
     @ApiProperty()
     qty: number;
 
+    @ApiProperty()
+    userId: string;
 
     @ApiProperty()
-    userd: string;
+    orderId: number;
 
     @ApiProperty()
-    order: number;
-
-    @ApiProperty()
-    product: number;
+    productId: number;
 }

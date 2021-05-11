@@ -1,7 +1,8 @@
 import { type } from 'node:os';
 import { UserEntity } from 'src/auth/entities/user.entity';
+import { OrderDetail } from 'src/order-details/entities/order-detail.entity';
 import { Product } from 'src/product/entities/product.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, JoinColumn, OneToMany } from "typeorm";
 
 @Entity({ name: 'orders' })
 export class Order {
@@ -25,10 +26,14 @@ export class Order {
 
     @ManyToOne(() => UserEntity, (user) => user.userId)
     @JoinColumn({ name: 'userId' })
-    user: UserEntity;
+    userId: UserEntity;
 
     @ManyToOne(() => Product, (product) => product.productId)
     @JoinColumn({ name: 'productId' })
-    productId: Product[];
+    productId: Product;
+
+    @OneToMany(() => OrderDetail, (orderDetails) => orderDetails.orderId)
+    @JoinColumn({ name: 'orderDetailsId' })
+    orderDetailsId: OrderDetail;
 
 }

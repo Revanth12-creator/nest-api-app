@@ -1,4 +1,3 @@
-
 import { type } from 'node:os';
 import { UserEntity } from 'src/auth/entities/user.entity';
 import { Order } from 'src/order/entities/order.entity';
@@ -8,16 +7,16 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn, ManyToMa
 @Entity({ name: 'orderdetails' })
 export class OrderDetail {
     @PrimaryGeneratedColumn()
-    orderNo: number;
+    orderDetailsId: number;
 
-    @Column({ default: '2' })
+    @Column({ nullable: false })
     quantity: number;
 
     @Column({ type: "datetime", default: () => 'CURRENT_TIMESTAMP' })
     orderDate: Date;
 
-    @Column({ type: 'datetime' })
-    orderShippingDate: Date;
+    // @Column({ type: 'datetime' })
+    // orderShippingDate: Date;
 
     @Column({ default: 10, type: 'decimal', precision: 2 })
     totalAmount: number;
@@ -28,15 +27,13 @@ export class OrderDetail {
 
     @ManyToOne(() => UserEntity, (user) => user.userId)
     @JoinColumn({ name: "userId" })
-    user: UserEntity[];
+    userId: UserEntity;
 
     @ManyToOne(() => Order, (order) => order.orderId)
     @JoinColumn({ name: "orderId" })
-    order: Order[];
+    orderId: Order[];
 
     @ManyToOne(() => Product, (product) => product.productId)
     @JoinColumn({ name: "productId" })
-    product: Product[];
-
-
+    productId: Product;
 }

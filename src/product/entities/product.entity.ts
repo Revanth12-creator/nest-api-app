@@ -23,6 +23,6 @@ export class Product {
   productStock: number;
 
   @OneToMany(() => Order, (order) => order.orderId)
-  order: Order[];
+  orderId: Order[];
 
 }

@@ -6,6 +6,7 @@ import { Payment } from './entities/payment.entity';
 import { Like, Repository } from 'typeorm';
 import { OrderService } from 'src/order/order.service';
 import { UserService } from 'src/auth/user/user.service';
+import { ProductService } from 'src/product/product.service';
 
 
 @Injectable()
@@ -13,32 +14,46 @@ export class PaymentService {
 
   constructor(
     @InjectRepository(Payment) private paymentRepository: Repository<Payment>,
+    private userService: UserService,
     private orderService: OrderService,
+    private productService: ProductService
   ) { }
 
-  async create(oId: number, createPaymentDto: CreatePaymentDto) {
+  async create(userId: string, orderId: number, productId: number, createPaymentDto: CreatePaymentDto) {
     try {
-      const order1 = await this.orderService.findAll();
-      console.log(order1)
+      const user = await this.userService.findById(userId)
+      const order = await this.orderService.findOne(orderId)
+      const product = await this.productService.findOne(productId)
+      console.log("payment order", order)
+      const { amount, mode } = createPaymentDto;
       return this.paymentRepository.save({
-        paymentAmount: createPaymentDto.amount,
-        paymentMode: createPaymentDto.mode,
-        order1
-      });
+        paymentAmount: amount,
+        paymentMode: mode,
+        userId: user,
+        productId: product,
+        //orderId: order
+      })
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
   }
 
-  findAll() {
-    return this.paymentRepository.find();
+
+  async findAll(userId: string) {
+    try {
+      const user = await this.userService.findById(userId)
+      return this.paymentRepository.find({ where: { userId: user } });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   findOne(id: number) {
     return this.paymentRepository.findOne(id)
       .then((data) => {
         if (!data) throw new NotFoundException();
-      });
+      })
+      .catch(err => console.log(err))
   }
 
   update(id: number, updatePaymentDto: UpdatePaymentDto) {
