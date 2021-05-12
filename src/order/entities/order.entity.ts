@@ -1,6 +1,7 @@
 import { type } from 'node:os';
 import { UserEntity } from 'src/auth/entities/user.entity';
 import { OrderDetail } from 'src/order-details/entities/order-detail.entity';
+import { Payment } from 'src/payment/entities/payment.entity';
 import { Product } from 'src/product/entities/product.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, JoinColumn, OneToMany } from "typeorm";
 
@@ -35,5 +36,11 @@ export class Order {
     @OneToMany(() => OrderDetail, (orderDetails) => orderDetails.orderId)
     @JoinColumn({ name: 'orderDetailsId' })
     orderDetailsId: OrderDetail;
+
+
+    @OneToMany(() => Payment, (payment) => payment.paymentId)
+    @JoinColumn({ name: 'payment' })
+    paymentId: Payment[];
+
 
 }

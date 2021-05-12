@@ -30,7 +30,13 @@ export class OrderDetailsService {
       return this.orderDetailsRepository.save({
         quantity: qty,
         userId: user,
-        //orderId: order,
+        _orderId: order,
+        get orderId() {
+          return this._orderId;
+        },
+        set orderId(value) {
+          this._orderId = value;
+        },
         productId: product
       });
     } catch (err) {
@@ -46,7 +52,7 @@ export class OrderDetailsService {
   findOne(id: number,) {
     return this.orderDetailsRepository.findOne(id)
       .then((data) => {
-        console.log(data)
+        return data;
       })
       .catch(err => console.log(err))
   }

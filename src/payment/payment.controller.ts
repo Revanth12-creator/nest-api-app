@@ -15,7 +15,7 @@ export class PaymentController {
   @ApiOkResponse({ description: "Data Posted Successfully" })
   @Post()
   create(@Request() req: any, @Body() createPaymentDto: CreatePaymentDto) {
-    return this.paymentService.create(req.user.userId, req.body.productId, req.body.orderId, createPaymentDto);
+    return this.paymentService.create(req.user.userId, req.productId, req.orderId, createPaymentDto);
   }
 
 
@@ -34,6 +34,13 @@ export class PaymentController {
     return this.paymentService.findOne(+id);
   }
 
+
+  // @ApiNotFoundResponse({ description: 'No data is found for ID...  😿' })
+  // @ApiOkResponse({ description: 'Payment Data found for ID... 😺' })
+  // @Get(':id')
+  // findOne(@Request() req: any, @Param('id') id: string) {
+  //   return this.paymentService.findOne(+id);
+  // }
 
   @ApiNotFoundResponse({ description: 'Data Not Updated' })
   @ApiOkResponse({ description: "Data Updated Successfully" })

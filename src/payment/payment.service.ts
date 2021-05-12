@@ -31,7 +31,13 @@ export class PaymentService {
         paymentMode: mode,
         userId: user,
         productId: product,
-        //orderId: order
+        _orderId: order,
+        get orderId() {
+          return this._orderId;
+        },
+        set orderId(value) {
+          this._orderId = value;
+        },
       })
     } catch (err) {
       console.log(err)
@@ -48,13 +54,14 @@ export class PaymentService {
     }
   }
 
+
   findOne(id: number) {
-    return this.paymentRepository.findOne(id)
-      .then((data) => {
-        if (!data) throw new NotFoundException();
-      })
-      .catch(err => console.log(err))
+    return this.paymentRepository.findOne(id).then((data) => {
+      if (!data) throw new NotFoundException(); //throw new HttpException({}, 204);
+      return data;
+    }).catch(err => console.log(err))
   }
+
 
   update(id: number, updatePaymentDto: UpdatePaymentDto) {
     return this.paymentRepository.update(id,

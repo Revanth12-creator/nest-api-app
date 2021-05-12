@@ -15,7 +15,7 @@ export class OrderDetailsController {
   @ApiOkResponse({ description: "Data Posted Successfully" })
   @Post()
   create(@Request() req: any, @Body() createOrderDetailDto: CreateOrderDetailDto) {
-    return this.orderDetailsService.create(req.user.userId, req.order, req.productId, createOrderDetailDto);
+    return this.orderDetailsService.create(req.user.userId, req.orderId1, req.productId, createOrderDetailDto);
   }
 
 
