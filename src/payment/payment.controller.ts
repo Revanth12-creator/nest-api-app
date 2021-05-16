@@ -34,14 +34,6 @@ export class PaymentController {
     return this.paymentService.findOne(+id);
   }
 
-
-  // @ApiNotFoundResponse({ description: 'No data is found for ID...  😿' })
-  // @ApiOkResponse({ description: 'Payment Data found for ID... 😺' })
-  // @Get(':id')
-  // findOne(@Request() req: any, @Param('id') id: string) {
-  //   return this.paymentService.findOne(+id);
-  // }
-
   @ApiNotFoundResponse({ description: 'Data Not Updated' })
   @ApiOkResponse({ description: "Data Updated Successfully" })
   @Patch(':id')

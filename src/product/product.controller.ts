@@ -31,14 +31,76 @@ export class ProductController {
     return this.productService.bulkCreate();
   }
 
-  @Get()
-  findAll(@Query('page') page: number = 1, @Query('size') size: number = 20) {
-    return this.productService.findAll(page, size);
-  }
+ 
+@Get()
+findAll(
+    @Query("page") page: number = 1,
+    @Query("size") size: number = 20,
+    @Query("minPrice") minPrice: number = 1,
+    @Query("maxPrice") maxPrice: number = 5000,
+    @Query("searchData") searchData: string,
+    @Query("sortName") sortName: string,
+    @Query("sortPrice") sortPrice: string
+) {
+    if (sortName == "productSalePrice" && sortPrice == "ASC") {
+        return this.productService.findAllAS(
+            page,
+            size,
+            minPrice,
+            maxPrice,
+            searchData,
+            sortName,
+            sortPrice
+        );
+    }
+    if (sortName == "productSalePrice" && sortPrice == "DESC") {
+        return this.productService.findAllDE(
+            page,
+            size,
+            minPrice,
+            maxPrice,
+            searchData,
+            sortName,
+            sortPrice
+        );
+    }
+
+    if (sortName == "productName" && sortPrice == "ASC") {
+        return this.productService.findAllASC(
+            page,
+            size,
+            minPrice,
+            maxPrice,
+            searchData,
+            sortName,
+            sortPrice
+        );
+    }
+    if (sortName == "productName" && sortPrice == "DESC") {
+        return this.productService.findAllDEC(
+            page,
+            size,
+            minPrice,
+            maxPrice,
+            searchData,
+            sortName,
+            sortPrice
+        );
+    }
+    return this.productService.findAll(
+        page,
+        size,
+        minPrice,
+        maxPrice,
+        searchData,
+        sortName,
+        sortPrice
+    );
+}
 
   @Get('search')
   findByQuery(@Query('q') query: string) {
-    return this.productService.fingByQuery(query);
+    return this.productService.findByQuery(query);
   }
 
   @ApiNotFoundResponse({ description: 'No data is found for the specified ID' })

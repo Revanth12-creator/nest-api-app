@@ -3,8 +3,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
-import { Like, Repository } from 'typeorm';
-
+import { Between, ILike, LessThan, Like, MoreThan, Repository } from "typeorm";
 import {
   uniqueNamesGenerator,
   adjectives,
@@ -26,34 +25,174 @@ export class ProductService {
     });
   }
 
-  findAll(page: number, size: number) {
+  findAllAS(
+    page: number,
+    size: number,
+    minPrice: number,
+    maxPrice: number,
+    searchData: string,
+    sortName: string,
+    sortPrice: string
+) {
     return this.productRepository
-      .findAndCount({
-        take: size,
-        skip: (page - 1) * size,
-      })
-      .then((res) => ({
-        totalItems: res[1],
-        data: res[0],
-        currentPage: page,
-        totalPages: Math.ceil(res[1] / size),
-      }));
-  }
+        .findAndCount({
+            where: {
+                productSalePrice: Between(minPrice, maxPrice),
+                productName: Like(`%${searchData}%`),
+            },
+            order: { productSalePrice: "ASC" },
+            take: size,
+            skip: (page - 1) * size,
+        })
+        .then((res) => ({
+            totalItems: res[1],
+            data: res[0],
+            currentPage: page,
+            totalPages: Math.ceil(res[1] / size),
+        })).catch(err => {
+          console.log(err)
+        }
+        )
+}
 
-  fingByQuery(query: string) {
+findAllDE(
+    page: number,
+    size: number,
+    minPrice: number,
+    maxPrice: number,
+    searchData: string,
+    sortName: string,
+    sortPrice: string
+) {
+    return this.productRepository
+        .findAndCount({
+            where: {
+                productSalePrice: Between(minPrice, maxPrice),
+                productName: Like(`%${searchData}%`),
+            },
+            order: { productSalePrice: "DESC" },
+
+            take: size,
+            skip: (page - 1) * size,
+        })
+        .then((res) => ({
+            totalItems: res[1],
+            data: res[0],
+            currentPage: page,
+            totalPages: Math.ceil(res[1] / size),
+        })).catch(err => {
+          console.log(err)
+        })
+}
+
+findAllASC(
+    page: number,
+    size: number,
+    minPrice: number,
+    maxPrice: number,
+    searchData: string,
+    sortName: string,
+    sortPrice: string
+) {
+    return this.productRepository
+        .findAndCount({
+            where: {
+                productSalePrice: Between(minPrice, maxPrice),
+                productName: Like(`%${searchData}%`),
+            },
+            order: { productName: "ASC" },
+
+            take: size,
+            skip: (page - 1) * size,
+        })
+        .then((res) => ({
+            totalItems: res[1],
+            data: res[0],
+            currentPage: page,
+            totalPages: Math.ceil(res[1] / size),
+        })).catch(err => {
+          console.log(err)
+        })
+}
+
+findAllDEC(
+    page: number,
+    size: number,
+    minPrice: number,
+    maxPrice: number,
+    searchData: string,
+    sortName: string,
+    sortPrice: string
+) {
+    return this.productRepository
+        .findAndCount({
+            where: {
+                productSalePrice: Between(minPrice, maxPrice),
+                productName: Like(`%${searchData}%`),
+            },
+            order: { productName: "DESC" },
+
+            take: size,
+            skip: (page - 1) * size,
+        })
+        .then((res) => ({
+            totalItems: res[1],
+            data: res[0],
+            currentPage: page,
+            totalPages: Math.ceil(res[1] / size),
+        })).catch(err => {
+          console.log(err)
+        })
+}
+
+findAll(
+    page: number,
+    size: number,
+    minPrice: number,
+    maxPrice: number,
+    searchData: string,
+    sortName: string,
+    sortPrice: string
+) {
+    return this.productRepository
+        .findAndCount({
+            where: {
+                productSalePrice: Between(minPrice, maxPrice),
+                productName: Like(`%${searchData}%`),
+            },
+            take: size,
+            skip: (page - 1) * size,
+        })
+        .then((res) => ({
+            totalItems: res[1],
+            data: res[0],
+            currentPage: page,
+            totalPages: Math.ceil(res[1] / size),
+        })).catch(err => {
+          console.log(err)
+        })
+}
+
+
+  findByQuery(query: string) {
     return this.productRepository
       .findAndCount({
         where: { productName: Like(`%${query}%`) },
         order: { productId: 'ASC' },
       })
-      .then((d) => ({ totalItems: d[1], data: d[0] }));
+      .then((d) => ({ totalItems: d[1], data: d[0] }))
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   findOne(id: number) {
     return this.productRepository.findOne(id).then((data) => {
       if (!data) throw new NotFoundException(); //throw new HttpException({}, 204);
       return data;
-    });
+    }).catch(err => {
+      console.log(err)
+    })
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {

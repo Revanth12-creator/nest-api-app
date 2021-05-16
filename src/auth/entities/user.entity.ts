@@ -4,6 +4,7 @@ import {
   Column,
   BeforeInsert,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Address } from 'src/address/entities/address.entity';
@@ -36,7 +37,8 @@ export class UserEntity {
   }
 
   // one user will have many addressess
-  @OneToMany(() => Address, (address) => address.user)
+  @OneToMany(() => Address, (address) => address.userId)
+  @JoinColumn({ name: "address" })
   address: Address[];
 
   @OneToMany(() => Order, (order) => order.orderId)

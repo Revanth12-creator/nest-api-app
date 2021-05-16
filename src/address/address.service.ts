@@ -22,13 +22,14 @@ export class AddressService {
       line2,
       pincode,
       state,
-      user,
+      userId: user,
       createdAt: new Date().toISOString(),
     });
   }
 
-  findAll() {
-    return this.addressRepository.find();
+  async findAll(userId: string) {
+    const user = await this.userService.findById(userId);
+    return this.addressRepository.find({ where: { userId: user } });
   }
 
   async findOne(id: number) {
@@ -38,14 +39,18 @@ export class AddressService {
     });
   }
 
+
   update(id: number, updateAddressDto: UpdateAddressDto) {
-    return this.addressRepository.update(
-      { id },
-      {
-        ...updateAddressDto,
-      },
-    );
+    const { line1, line2, city, state, pincode } = updateAddressDto;
+    return this.addressRepository.update(id, {
+      line1,
+      line2,
+      city,
+      state,
+      pincode
+    });
   }
+
 
   remove(id: number) {
     return this.addressRepository.delete({ id });
