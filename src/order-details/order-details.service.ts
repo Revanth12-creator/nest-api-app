@@ -37,7 +37,13 @@ export class OrderDetailsService {
         set orderId(value) {
           this._orderId = value;
         },
-        productId: product
+        _productId: product,
+        get productId() {
+          return this._productId;
+        },
+        set productId(value) {
+          this._productId = value;
+        },
       });
     } catch (err) {
       console.log(err)

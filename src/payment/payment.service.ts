@@ -25,13 +25,20 @@ export class PaymentService {
       const order = await this.orderService.findOne(orderId)
       const product = await this.productService.findOne(productId)
       console.log("payment order", order)
-      const { amount, mode } = createPaymentDto;
+      const { cardUName, cardNo, cvv} = createPaymentDto;
       return this.paymentRepository.save({
-        paymentAmount: amount,
-        paymentMode: mode,
+        cardUName,
+        cardNo,
+        cvv,
         userId: user,
-        productId: product,
-        _orderId: order,
+        _productId: product,
+        get productId() {
+          return this._productId;
+        },
+        set productId(value) {
+          this._productId = value;
+        },
+        _orderId: order,    
         get orderId() {
           return this._orderId;
         },
@@ -66,8 +73,9 @@ export class PaymentService {
   update(id: number, updatePaymentDto: UpdatePaymentDto) {
     return this.paymentRepository.update(id,
       {
-        paymentAmount: updatePaymentDto.amount,
-        paymentMode: updatePaymentDto.mode
+        cardUName: updatePaymentDto.cardUName,
+        cardNo: updatePaymentDto.cardNo,
+        cvv: updatePaymentDto.cvv
       });
   }
 

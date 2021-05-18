@@ -8,19 +8,24 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinColum
 export class Payment {
     @PrimaryGeneratedColumn()
     paymentId: number;
+ 
+    @Column({ nullable:false })
+    cardUName: string;
+    
+    @Column({  nullable:false })
+    cardNo: number;
+   
+    // @Column({  })
+    // expiration?: string;
 
-    @Column({ default: 0, type: "decimal", precision: 10 })
-    paymentAmount: number;
+    @Column({  nullable:false })
+    cvv: number;
 
     @Column({ type: "datetime", default: () => 'CURRENT_TIMESTAMP' })
     paymentDate: Date;
 
     @Column({ default: 'pending' })
     paymentStatus: string;
-
-    @Column({ default: 'cash' })
-    paymentMode: string;
-
 
     @ManyToOne(() => UserEntity, (userEntity) => userEntity.userId)
     @JoinColumn({ name: 'userId' })
@@ -32,6 +37,6 @@ export class Payment {
 
     @ManyToOne(() => Product, (product) => product.productId)
     @JoinColumn({ name: 'productId' })
-    productId: Product;
+    productId: Product[];
 
 }

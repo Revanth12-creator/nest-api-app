@@ -26,6 +26,9 @@ export class UserEntity {
   @Column({ nullable: false })
   userPassword: string; // plain text password
 
+  @Column({ nullable: true })
+  userProfileImg: string;
+
   @Column({ type: 'datetime' })
   createdAt: Date;
 

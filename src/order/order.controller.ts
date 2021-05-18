@@ -39,6 +39,12 @@ export class OrderController {
     return this.orderService.findOne(+id);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  getOrder(@Request() req: any) {
+      return this.orderService.findbyId(req.user.userId);
+  }
+
   @ApiNotFoundResponse({ description: 'Data Not Updated' })
   @ApiOkResponse({ description: "Data Updated Successfully" })
   @Patch(':id')

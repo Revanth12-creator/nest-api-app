@@ -1,5 +1,6 @@
 import { type } from 'node:os';
 import { Order } from 'src/order/entities/order.entity';
+import { Payment } from 'src/payment/entities/payment.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity({ name: 'products' })
@@ -24,5 +25,9 @@ export class Product {
 
   @OneToMany(() => Order, (order) => order.orderId)
   orderId: Order[];
+
+  
+  @OneToMany(() => Payment, (payment) => payment.paymentId)
+  paymentId: Order[];
 
 }
